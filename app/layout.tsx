@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Mulish } from "next/font/google";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+export const mulish = Mulish({
+  variable: "--font-mulish",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -24,12 +21,38 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang="en">
+        <body className={`${mulish.variable} dark antialiased`}>
+          {children}
+          {/* <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          {children} */}
+        </body>
+      </html>
+    </ClerkProvider>
+
+    // <html lang="en">
+    //   <body className={`${mulish.variable} dark antialiased`}>
+    //     <ClerkProvider>
+    //       {children}
+    //       {/* <SignedOut>
+    //         <SignInButton />
+    //       </SignedOut>
+    //       <SignedIn>
+    //         <UserButton />
+    //       </SignedIn>
+    //       {children} */}
+    //     </ClerkProvider>
+    //   </body>
+    // </html>
   );
 }
